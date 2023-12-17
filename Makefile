@@ -1,10 +1,16 @@
-ARCHS=armv7 armv7s arm64
-TARGET = iphone:clang:latest:6.0
+ARCHS=arm64
+TARGET = iphone:clang:16.5:14
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
+
+ifeq ($(THEOS_PACKAGE_SCHEME),rootless)
+	PACKAGE_BUILDNAME := rootless
+else
+	PACKAGE_BUILDNAME := rootful
+endif
 
 TOOL_NAME = jetsamctl
-jetsamctl_CFLAGS = -Wall -Wpedantic -Wextra
+jetsamctl_CFLAGS = -Wall -Wpedantic -Wextra -Wno-import-preprocessor-directive-pedantic
 jetsamctl_FILES = main.c
 
 include $(THEOS_MAKE_PATH)/tool.mk
